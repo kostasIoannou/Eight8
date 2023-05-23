@@ -554,11 +554,9 @@ $(document).ready(function() {
   $('input[type="radio"][name^="option\\["]').on('change', function() {
     // Get the selected radio option's value
     var selectedOptionId = $(this).val();
-    console.log('Selected Option ID:', selectedOptionId);
 
     // Get the selected quantity
     var selectedQuantity = parseInt($('#input-quantity').val());
-    console.log('Selected Quantity:', selectedQuantity);
 
     // Call the checkStockAvailability() function
     checkStockAvailability(selectedOptionId, selectedQuantity);
