@@ -1,0 +1,20 @@
+RewriteEngine On
+RewriteBase /openchart/
+
+# Redirect admin URL
+RewriteRule ^system/storage/(.*) index.php?route=error/not_found [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|webp|js|css|svg)
+RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
+
+# Add CORS headers
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Origin, Content-Type, Accept, x-requested-with"
+</IfModule>
+
+
+

@@ -1,0 +1,137 @@
+{{ header }}
+
+<div id="common-home" class="container">
+    {% if column_left and column_right %}
+        {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+        {% set class = 'col-sm-9' %}
+    {% else %}
+        {% set class = 'col-sm-12' %}
+    {% endif %}
+    
+    <div id="content" class="{{ class }}">
+        <h1>{{ heading_title }}</h1>
+        <p>{{text_content}}</p>
+        <div id="total-records"></div>
+
+        <div class="filter">
+        <h3>Filter by Average Rating:</h3>
+            <select id="rating-select" name="rating">
+                <option value="" selected>All</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div id="product-list" class="row"></div>
+        <div id="pagination" class="text-center"></div>
+    </div>
+    
+    {{ column_right }}
+</div>
+
+{{ footer }}
+
+<script>
+$(document).ready(function() {
+  // Set initial page and limit values
+  var page = 1;
+  var limit = 10;
+  var itemsPerRow = 3;
+
+  function fetchProducts(minRating) {
+    minRating = minRating || null;
+    $.ajax({
+      url: 'index.php?route=custom/products_eight/fetchProducts',
+      type: 'GET',
+      data: {
+        minRating: minRating,
+        page: page,
+        limit: limit
+      },
+      dataType: 'json',
+      success: function(response) {
+        // Clear existing product list
+        $('#product-list').empty();
+
+        // Check if products exist in the response
+        if (response.products) {
+            console.log('hi')
+          // Iterate through each product and append to the list
+          $.each(response.products, function(index, product) {
+            var html = '<div class="col-md-' + (12 / itemsPerRow) + '">' +
+              '<div class="product">' +
+              '<a href="' + product.url + '"><img src="' + product.image + '" alt="' + product.name + '"></a>' +
+              '<h4><a href="' + product.url + '">' + product.name + '</a></h4>' +
+              '<p>Price: ' + product.price + '</p>' +
+              '<p>Average Rating: ' + product.avg_rating + '</p>' +
+              '</div>' +
+              '</div>';
+
+            $('#product-list').append(html);
+          });
+        } else {
+          // No products found
+          $('#product-list').html('<p>No products found.</p>');
+        }
+
+        // Update pagination and total records
+        updatePagination(response.totalRecords);
+      },
+
+    });
+  }
+
+  // Update pagination based on total records
+  function updatePagination(totalRecords) {
+    var totalPages = Math.ceil(totalRecords / limit);
+
+    // Clear existing pagination
+    $('#pagination').empty();
+
+    // Create pagination links
+    var paginationHtml = '<ul class="pagination">';
+    for (var i = 1; i <= totalPages; i++) {
+      var activeClass = i === page ? 'active' : '';
+      var link = '<li class="page-item ' + activeClass + '"><a class="page-link" href="#" data-page="' + i + '">' + i + '</a></li>';
+      paginationHtml += link;
+    }
+    paginationHtml += '</ul>';
+
+    // Display pagination
+    $('#pagination').html(paginationHtml);
+
+    // Display total records
+    $('#total-records').text('Total Records: ' + totalRecords);
+  }
+
+  // Handle filter change event
+  $('#rating-select').on('change', function() {
+    var minRating = $(this).val();
+    page = 1; // Reset page to 1
+
+    fetchProducts(minRating);
+  });
+
+  // Handle page link click event
+  $(document).on('click', '.page-link', function(e) {
+    e.preventDefault();
+
+    var clickedPage = $(this).data('page');
+
+    // Update page and fetch products
+    page = clickedPage;
+    fetchProducts($('#rating-select').val());
+  });
+
+  // Fetch products initially
+  fetchProducts(null);
+});
+
+$(document).ready(function() {
+  // Add an event listener to radio options
+  console.log('hi')
+});
+</script>
