@@ -12,7 +12,7 @@ RewriteRule ^(.*)$ index.php?route=$1 [L,QSA]: Rewrites the URL to pass the requ
 
 # Install the database  that I send you !!
 
-# After install it log in on admin panel with credential that i send you in email
+# After install it log in on admin panel with credential that I sent you in email
 1. Open the SEO URL.
 2. Unstall my custom module with name  -> Product Average Rating.
 3. Install it again to be sure that working ok.-> in order to fix it i make model, controller on admin of course
