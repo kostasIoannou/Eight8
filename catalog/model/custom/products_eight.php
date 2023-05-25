@@ -25,7 +25,7 @@ class ModelCustomProductsEight extends Model {
                 $image = $this->model_tool_image->resize($product['image'], 228, 228); // Use image cache URL
 
                 $filteredProducts[] = array(
-                    'url' => 'http://localhost/openchart/index.php?route=product/product&product_id=' . $row['product_id'],
+                    'url' => $this->url->link('product/product', 'product_id=' . $row['product_id']),
                     'image' => $image,
                     'name' => $product['name'],
                     'price' => $product['price'],
