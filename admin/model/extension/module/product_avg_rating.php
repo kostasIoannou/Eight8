@@ -10,7 +10,7 @@ class ModelExtensionModuleProductAvgRating extends Model {
             ) ENGINE=MyISAM DEFAULT COLLATE = utf8_general_ci;
         ");
 
-        //At this way create a table with real data not dummy for that reason i commend it out 
+        //This way I create a table with real data and not dummy data which is why I commend 
 
         // $products = $this->db->query("SELECT `product_id` FROM `" . DB_PREFIX . "product`");
 
