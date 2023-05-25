@@ -563,11 +563,6 @@ $(document).ready(function() {
 
   });
 
-  // Trigger stock check on page load
-  var selectedOptionId = $('input[type="radio"][name^="option\\["]:checked').val();
-  var selectedQuantity = parseInt($('#input-quantity').val());
-  checkStockAvailability(selectedOptionId, selectedQuantity);
-
    // Function to check stock availability
   function checkStockAvailability(selectedOptionId, selectedQuantity) {
     var productUrl = 'index.php?route=custom/products_eight/checkStockAvailability';
