@@ -550,6 +550,30 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+   // Check if the current URL matches the stored URL
+  var storedUrl = sessionStorage.getItem('storedUrl');
+  var currentUrl = window.location.href;
+
+  if (storedUrl && storedUrl === currentUrl) {
+    // Retrieve the stored values from sessionStorage
+    var storedOptionId = sessionStorage.getItem('selectedOptionId');
+    var storedQuantity = sessionStorage.getItem('selectedQuantity');
+
+    if (storedOptionId && storedQuantity) {
+      // Set the stored values in the form
+      $('input[type="radio"][name^="option\\["][value="' + storedOptionId + '"]').prop('checked', true);
+      $('#input-quantity').val(storedQuantity);
+
+      // Call the checkStockAvailability() function with the stored values
+      checkStockAvailability(storedOptionId, parseInt(storedQuantity));
+    }
+  } else {
+    // Clear the stored values since the URL has changed
+    sessionStorage.removeItem('storedUrl');
+    sessionStorage.removeItem('selectedOptionId');
+    sessionStorage.removeItem('selectedQuantity');
+  }
+
   // Add an event listener to radio options
   $('input[type="radio"][name^="option\\["]').on('change', function() {
     // Get the selected radio option's value
@@ -561,6 +585,12 @@ $(document).ready(function() {
     // Call the checkStockAvailability() function
     checkStockAvailability(selectedOptionId, selectedQuantity);
 
+    // Store the selected option and quantity in sessionStorage
+    sessionStorage.setItem('selectedOptionId', selectedOptionId);
+    sessionStorage.setItem('selectedQuantity', selectedQuantity);
+
+    // Store the current URL in sessionStorage
+    sessionStorage.setItem('storedUrl', currentUrl);
   });
 
    // Function to check stock availability
@@ -590,7 +620,6 @@ $(document).ready(function() {
      });
   }
 });
-
 //--></script> 
 
 {{ footer }} 
